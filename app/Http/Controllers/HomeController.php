@@ -16,35 +16,30 @@ class HomeController extends Controller
         // Datos para las tarjetas resumen
         $currentUser = auth()->user();
         
-        $pedidosCount = $currentUser->hasRole('ADMIN') == 1 ? Order::count(): Order::where('user_id',$currentUser->id)->count();
+        $pedidosquery= Order::query(); 
+        if($currentUser->hasRole('ADMIN') != 1) {
+            $pedidosquery->where('user_id', $currentUser->id);
+        } 
+        $pedidosCount=$pedidosquery->count();
         $articulosCount = Article::where('stock', '>', 0)->count();
         $vendedoresCount = User::whereHas('roles', function($query) {
                 $query->where('name', 'USER');
-            })->count();
+        })->count();
 
         // Datos para gráfico de ventas mensuales
 
-        $ventasMensuales = $currentUser->hasRole('ADMIN') == 1 ?
-             Order::select(
-                DB::raw('MONTH(created_at) as month'),
-                DB::raw('SUM(total_amount) as total')
-            )->whereYear('created_at', date('Y'))
+        $ventasMensualesQuery = Order::query();
+        if ($currentUser->hasRole('ADMIN') != 1) {
+            $ventasMensualesQuery->where('user_id', $currentUser->id);
+        }
+        $ventasMensualesQuery->select(
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('SUM(total_amount) as total')
+        )->whereYear('created_at', date('Y'))
             ->groupBy('month')
-            ->orderBy('month')
-            ->get()
-            ->pluck('total', 'month')
-            ->toArray():
+            ->orderBy('month')            ;
 
-            Order::select(
-                DB::raw('MONTH(created_at) as month'),
-                DB::raw('SUM(total_amount) as total')
-            )->where('user_id',$currentUser->id)
-            ->whereYear('created_at', date('Y'))
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get()
-            ->pluck('total', 'month')
-            ->toArray();
+        $ventasMensuales = $ventasMensualesQuery->pluck('total', 'month')->toArray();
         // Rellenar meses sin ventas con 0
         
         $ventasData = [];

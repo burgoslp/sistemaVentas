@@ -6,7 +6,11 @@
     <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
         <h3 class="text-lg font-semibold text-gray-700">Cantidad de Pedidos</h3>
         <p class="text-4xl font-bold text-purple-600 mt-4">{{ $pedidosCount }}</p>
-        <p class="text-sm text-gray-500 mt-2">Pedidos realizados por {{ $currentUser->name }}</p>
+        @if($currentUser->hasRole('ADMIN') != 1)
+            <p class="text-sm text-gray-500 mt-2">Pedidos realizados por {{ $currentUser->name }}</p>
+        @else
+            <p class="text-sm text-gray-500 mt-2">Pedidos totales</p>
+        @endif
     </div>
 
     <!-- Caja 2: Artículos con existencia -->

@@ -31,6 +31,7 @@
                 <thead class="bg-gray-100">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Creador</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">cliente</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">fecha</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -43,6 +44,7 @@
                     @forelse($presupuestos as $presupuesto)
                        <tr>
                             <td class="px-6 py-4 whitespace-nowrap">{{$presupuesto->id}}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{$presupuesto->user->name}}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{$presupuesto->client->name}} {{$presupuesto->client->lastname}}</td>
                             <td>{{$presupuesto->created_at}}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{$presupuesto->status == 1 ? 'pendiente':'aprobado'}}
