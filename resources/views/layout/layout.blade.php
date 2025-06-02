@@ -9,7 +9,12 @@
 </head>
 <body>
     <main class="grid grid-cols-6">
-        <section class="hidden  p-5 sticky top-0 h-screen md:flex md:flex-col md:justify-between" style="background-color:#EF9B01 ">
+              
+         <!-- Overlay para móvil -->
+        <div id="mobile-overlay" class="fixed inset-0 bg-gray-500 opacity-50 bg-opacity-50 z-20 hidden lg:hidden"></div>
+        
+        <!--barra de navegacion vertical-->
+        <section id="sidebar" class="fixed hidden lg:sticky top-0  z-30 w-64 h-screen p-5 bg-[#EF9B01] lg:flex lg:flex-col lg:justify-between transform -translate-x-full lg:w-auto lg:translate-x-0 transition-transform duration-300 ease-in-out">
             <div>
                 <img src="{{asset('image/logos/logos1.png')}}" alt="" class="mb-8">
                 <ul class="mt-4">
@@ -18,7 +23,6 @@
                             <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
                             <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                         </svg>
-                          
                         <a href="{{route('home')}}">Home</a>
                     </li>
                     <li class="text-white py-2 flex mb-2 pl-1  {{Route::is('articulos') ?'bg-orange-500': ' hover:bg-orange-500 transition-colors duration-300'  }} rounded-md">
@@ -50,18 +54,19 @@
                 </ul>
             </div>
             @if (Auth()->user()->hasRole('ADMIN')==1)
-                <a class=" text-center p-3 text-white mx-0 rounded shadow-xl mt-auto bg-gray-500" href="{{route('usuarios')}}" >
+                <a class="text-center p-3 text-white mx-0 rounded shadow-xl mt-auto bg-gray-500" href="{{route('usuarios')}}">
                     CONFIGURACIÓN
                 </a>
             @endif
-           
         </section>
-        <section class="col-span-6 md:col-span-5 bg-gray-100"> <!--Sección principal del contenido-->
+        <section class="col-span-6 lg:col-span-5 bg-gray-100"> <!--Sección principal del contenido-->
             <nav class="bg-white flex items-center p-4 shadow-lg"> <!-- Barra de navegación horizontal -->
                 <!-- Icono de Menú -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2">
-                    <path fill-rule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
-                </svg>
+                <button id="menu-toggle" class="lg:hidden mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
+                    </svg>
+                </button>
         
                 <!-- Contenedor del Input -->
                 <div class="relative flex-1 mx-4">
@@ -86,6 +91,38 @@
            @yield('contenido')
         </section>
     </main>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+            
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('-translate-x-full');
+                sidebar.classList.toggle('hidden'); // Mostrar/ocultar en móvil
+                mobileOverlay.classList.toggle('hidden');
+                document.body.classList.toggle('overflow-hidden');
+            });
+            
+            mobileOverlay.addEventListener('click', function() {
+                sidebar.classList.add('-translate-x-full');
+                mobileOverlay.classList.add('hidden');
+                sidebar.classList.toggle('hidden');
+                document.body.classList.remove('overflow-hidden');
+            });
+            
+            if (window.innerWidth < 768) {
+                const navLinks = document.querySelectorAll('#sidebar a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        sidebar.classList.add('-translate-x-full');
+                        mobileOverlay.classList.add('hidden');
+                        document.body.classList.remove('overflow-hidden');
+                    });
+                });
+            }
+        });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @stack('scripts')
 </body>
