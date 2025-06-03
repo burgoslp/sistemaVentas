@@ -14,8 +14,8 @@
         <div id="mobile-overlay" class="fixed inset-0 bg-gray-500 opacity-50 bg-opacity-50 z-20 hidden lg:hidden"></div>
         
         <!--barra de navegacion vertical-->
-        <section id="sidebar" class="fixed hidden lg:sticky top-0  z-30 w-64 h-screen p-5 bg-[#EF9B01] lg:flex lg:flex-col lg:justify-between transform -translate-x-full lg:w-auto lg:translate-x-0 transition-transform duration-300 ease-in-out">
-            <div>
+        <section id="sidebar" class="fixed hidden lg:sticky top-0  z-30  h-screen p-5 bg-[#EF9B01] lg:flex lg:flex-col lg:justify-between transform -translate-x-full lg:w-auto lg:translate-x-0 transition-transform duration-300 ease-in-out">
+            <div class="mb-10 lg:mb-auto">
                 <img src="{{asset('image/logos/logos1.png')}}" alt="" class="mb-8">
                 <ul class="mt-4">
                     <li class="text-white py-2 flex mb-2 pl-1 {{Route::is('home') ?'bg-orange-500': 'hover:bg-orange-500 transition-colors duration-300'  }} rounded-md">
@@ -54,7 +54,7 @@
                 </ul>
             </div>
             @if (Auth()->user()->hasRole('ADMIN')==1)
-                <a class="text-center p-3 text-white mx-0 rounded shadow-xl mt-auto bg-gray-500" href="{{route('usuarios')}}">
+                <a class="text-center block w-full p-3 text-white mx-0 rounded shadow-xl mt-auto bg-gray-500" href="{{route('usuarios')}}">
                     CONFIGURACIÓN
                 </a>
             @endif
