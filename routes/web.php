@@ -24,7 +24,7 @@ use App\Models\Budget;
 
 // Rutas de autenticación
 Route::controller(AuthController::class)->group(function () {
-
+    Route::get('/', 'showLoginForm');
     Route::get('/login', 'showLoginForm')->name('login');
     Route::post('/login', 'login');
     Route::post('/logout', 'logout')->name('logout');
@@ -33,31 +33,24 @@ Route::controller(AuthController::class)->group(function () {
 Route::group(['middleware'=>['auth']], function(){
         
     Route::get('/home', [HomeController::class,'index'])->name('home');
-
     Route::get('/articulos', [ArticleController::class, 'index'])->name('articulos');
-
-    
+    Route::get('/articulos/buscar/{name}', [ArticleController::class, 'search'])->name('articulos.search');
     Route::get('/presupuestos', [BudgetController::class,'index'])->name('presupuestos');
     Route::get('/presupuestos/create', [BudgetController::class,'create'])->name('presupuestos.create');
+    Route::get('/presupuestos/create/articulo/{id}', [BudgetController::class,'createByArticleId'])->name('presupuestos.createByArticle');
     Route::post('/presupuestos', [BudgetController::class,'store'])->name('presupuestos.store');
     Route::delete('/presupuestos/{id}', [BudgetController::class, 'destroy'])->name('presupuestos.destroy');
     Route::get('/presupuestos/show/{id}', [BudgetController::class, 'show'])->name('presupuestos.show');
     Route::put('/presupuestos/{id}', [BudgetController::class, 'update'])->name('presupuestos.update');
     Route::put('/presupuestos/aprove/{id}', [BudgetController::class, 'approveBudget'])->name('presupuestos.aprove');
     Route::get('/presupuestos/historico', [BudgetController::class, 'historico'])->name('presupuestos.historico');
-
-
     Route::get('/pedidos', [orderController::class,'index'])->name('pedidos');
     Route::get('/pedidos/show/{id}', [orderController::class, 'show'])->name('pedidos.show');
     Route::delete('/pedidos/{id}', [orderController::class, 'destroy'])->name('pedidos.destroy');
     Route::put('/pedidos/{id}', [orderController::class, 'update'])->name('pedidos.update');
     Route::put('/pedidos/aprove/{id}', [orderController::class, 'approveOrder'])->name('pedidos.aprove');
     Route::get('/pedidos/historico', [orderController::class, 'historico'])->name('pedidos.historico');
-
-
     Route::get('/historicos', [HistoryController::class,'index'])->name('historicos');
-
-
     Route::get('/usuarios', [UserController::class,'index'])->name('usuarios')->middleware(['role:ADMIN']);
     Route::get('/usuarios/create', [UserController::class,'create'])->name('usuarios.create')->middleware(['role:ADMIN']);
     Route::post('/usuarios', [UserController::class,'store'])->name('usuarios.store')->middleware(['role:ADMIN']);

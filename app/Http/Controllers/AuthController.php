@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     public function showLoginForm()
-    {
+    {   
+        if (Auth::check()) {
+            return redirect()->intended('home');
+        }
         return view('auth.login');
     }
 

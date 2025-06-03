@@ -23,7 +23,12 @@
                     <select name="articulos[0][id]" class="p-2 articulo-select block w-full border-gray-300 rounded-md shadow-sm mr-2">
                         <option value="">Seleccione un artículo</option>
                         @foreach ($articulos as $articulo)
-                            <option value="{{$articulo->id}}" data-precio="{{$articulo->price}}">{{$articulo->name}} - ${{number_format($articulo->price, 2)}}</option>
+                            @if ($articuloSeleccionado > 0 || $articuloSeleccionado != null)
+                                <option {{$articuloSeleccionado == $articulo->id ? 'selected':''}} value="{{$articulo->id}}" data-precio="{{$articulo->price}}">{{$articulo->name}} - ${{number_format($articulo->price, 2)}}</option>
+
+                            @else
+                                <option value="{{$articulo->id}}" data-precio="{{$articulo->price}}">{{$articulo->name}} - ${{number_format($articulo->price, 2)}}</option>
+                            @endif
                         @endforeach
                     </select>
                     <input type="number" name="articulos[0][cantidad]" min="1" value="1" class="p-2 cantidad-input block w-24 border-gray-300 rounded-md shadow-sm mr-2" placeholder="Cantidad" />

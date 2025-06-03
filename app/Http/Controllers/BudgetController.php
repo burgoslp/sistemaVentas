@@ -32,6 +32,13 @@ class BudgetController extends Controller
         return view('presupuestos.create', compact('clientes', 'articulos'));
     }
 
+    public function createByArticleId($idArticulo){
+        $clientes = Client::all();
+        $articulos = Article::select('id', 'name', 'price')->get(); 
+        $articuloSeleccionado= $idArticulo;
+        return view('presupuestos.create', compact('clientes', 'articulos','articuloSeleccionado'));
+    }
+
     public function store(Request $request){
         //validamos los campos del formulario
         $validated = $request->validate([
@@ -189,4 +196,6 @@ class BudgetController extends Controller
 
         return redirect()->route('presupuestos')->with('success', 'Presupuesto eliminado correctamente');
     }
+
+
 }

@@ -86,6 +86,16 @@ class orderController extends Controller
             'status'=>2,
             'approved_at'=>now()
         ]);
+
+        //actualizamos el stock de los articulos
+        foreach($pedido->details as $detail){
+            $article = Article::findOrFail($detail->article_id);
+            //restamos la cantidad del stock
+            $article->update([
+                'stock' => $article->stock - $detail->amount
+            ]);
+        }   
+        
         DB::commit();
         
         return redirect()->route('pedidos')->with('success', 'Pedido aprobado');

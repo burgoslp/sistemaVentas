@@ -70,10 +70,13 @@
         
                 <!-- Contenedor del Input -->
                 <div class="relative flex-1 mx-4">
-                    <input type="text" placeholder="Ingresa un código de artículo" class="w-full p-2 pl-10 rounded border border-gray-300" />
-                    <svg class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M11 2a9 9 0 1 0 6.362 15.362l4.862 4.862a1 1 0 0 0 1.415-1.415l-4.862-4.862A9 9 0 0 0 11 2zm0 2a7 7 0 1 1 0 14 7 7 0 0 1 0-14z" clip-rule="evenodd" />
-                    </svg>
+                    <form id="search-form" >
+                        @csrf
+                        <input id="search-input"  type="text" placeholder="Ingresa el nombre de un artículo" class="w-full p-2 pl-10 rounded border border-gray-300" />
+                        <svg class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd" d="M11 2a9 9 0 1 0 6.362 15.362l4.862 4.862a1 1 0 0 0 1.415-1.415l-4.862-4.862A9 9 0 0 0 11 2zm0 2a7 7 0 1 1 0 14 7 7 0 0 1 0-14z" clip-rule="evenodd" />
+                        </svg>
+                    </form>
                 </div>
                 <!-- Información del Usuario -->
                 <div class="flex items-center">
@@ -91,6 +94,13 @@
            @yield('contenido')
         </section>
     </main>
+<script>
+    document.getElementById('search-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const searchTerm = document.getElementById('search-input').value;
+        window.location.href = "{{ url('') }}/articulos/buscar/"+encodeURIComponent(searchTerm);
+    });
+</script>
 <script>
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menu-toggle');
